@@ -10,34 +10,25 @@ const url = require(`url`);
 // const textOut = `This is what we know about the avocado ${textIn}. \nCreated on ${Date.now()}`;
 
 // fs.writeFileSync(`${__dirname}}/txt/output.txt`, textOut);
-// console.log(`Text Writen`);
 
 //Asynch
 // fs.readFile(`${__dirname}}/txt/start.txt`, `utf-8`, (err, data1) => {
-//   console.log(data1, err);
 //   fs.readFile(`${__dirname}}/txt/${data1}.txt`, `utf-8`, (err, data2) => {
-//     console.log(data2);
 //     fs.readFile(`${__dirname}}/txt/append.txt`, `utf-8`, (err, data3) => {
-//       console.log(data3);
 //       fs.writeFile(
 //         `${__dirname}}/txt/output.txt`,
 //         `${data2}\n\n${data3}\n\n❤`,
 //         `utf-8`,
 //         (err) => {}
 //       );
-//       console.log(`File Written`);
 //     });
 //   });
 // });
-// console.log(`After Read Log`);
 
 ////////////////////////////////////////////////////////
 ///Server
 
 function replaceTemplate(temp, product) {
-  console.log(`❌❌❌temp❌❌❌ = `, temp);
-  console.log(`❌❌❌product❌❌❌ = `, product);
-
   let output = temp.replace(/{% ID %}/g, product.id);
   output = output.replace(/{% NAME %}/g, product.productName);
   output = output.replace(/{% IMAGE %}/g, product.image);
@@ -51,7 +42,6 @@ function replaceTemplate(temp, product) {
     output = output.replace(/{% NOT_ORGANIC %}/g, `not-organic`);
   }
 
-  console.log(`❌❌❌restult❌❌❌ = `, output);
   return output;
 }
 
@@ -72,9 +62,9 @@ const data = fs.readFileSync(`${__dirname}/dev-data/data.json`, `utf-8`);
 const dataObj = JSON.parse(data);
 
 const server = http.createServer((req, res) => {
-  const path = req.url;
+  const { query, pathname } = url.parse(req.url, true);
 
-  if (path === `/overview` || path === `/`) {
+  if (pathname === `/overview` || pathname === `/`) {
     res.writeHead(200, { contentType: "text/html" });
 
     const cardsHtml = dataObj
@@ -84,9 +74,12 @@ const server = http.createServer((req, res) => {
     const output = tempOverview.replace(`{% CARDS %}`, cardsHtml);
 
     res.end(output);
-  } else if (path === `/product`) {
-    res.end(`Hello World!\nThis is the Product`);
-  } else if (path === `/api`) {
+  } else if (pathname === `/product`) {
+    res.writeHead(200, { contentType: "text/html" });
+    const product = dataObj[query.id];
+    const output = replaceTemplate(tempProduct, product);
+    res.end(output);
+  } else if (pathname === `/api`) {
     res.writeHead(200, { contentType: "application/json" });
     res.end(data);
   } else {
@@ -97,6 +90,4 @@ const server = http.createServer((req, res) => {
   }
 });
 
-server.listen(8000, `127.0.0.1`, () => {
-  console.log(`Listening on poert 8000`);
-});
+server.listen(8000, `127.0.0.1`, () => {});
