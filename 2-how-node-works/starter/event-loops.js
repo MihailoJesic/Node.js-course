@@ -6,7 +6,7 @@ const start = Date.now();
 // Doesn't work on windows
 // process.env.UV_THREADPOOL_SIZE = 1;
 
-console.log(`Top Level`);
+console.log(`Top Level 1`);
 
 setTimeout(() => {
   console.log(`Timer 1`);
