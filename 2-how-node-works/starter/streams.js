@@ -30,5 +30,5 @@ server.on(`request`, (req, res) => {
 });
 
 server.listen(8000, `127.0.0.1`, () => {
-  console.log(`Listening...`);
+  console.log(`Server Listening...`);
 });
