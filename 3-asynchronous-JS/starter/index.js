@@ -42,18 +42,13 @@ async function getDogPic() {
     console.log(`step 5`);
   } catch (err) {
     console.log(`❌ ${err.message} ❌`);
-    throw err;
   }
   return `Done ✔`;
 }
 
-getDogPic()
-  .then((x) => {
-    console.log(x);
-  })
-  .catch((err) => {
-    console.log(`${err.message} ❤❤❤❤`);
-  });
+getDogPic().then((x) => {
+  console.log(x);
+});
 
 console.log(`step 3`);
 
