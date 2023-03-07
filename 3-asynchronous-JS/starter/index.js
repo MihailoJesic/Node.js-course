@@ -14,20 +14,29 @@ function readFilePro(file) {
   });
 }
 
-fs.readFile(`${__dirname}/dog.txt`, (err, data) => {
-  console.log(`Breed: ${data}`);
-
-  superagent
-    .get(`https://dog.ceo/api/breed/${data}/images/random`)
-    .then((res) => {
-      console.log(res.body);
-
-      fs.writeFile(`dog-img.txt`, res.body.message, (err) => {
-        if (err) return console.log(err.message);
-        console.log(`Random Terrier Saved`);
-      });
-    })
-    .catch((err) => {
-      console.log(err.message);
+function writeFilePro(file, data) {
+  return new Promise((resolve, reject) => {
+    fs.writeFile(file, data, (err) => {
+      if (err) reject(err.message + ` ❌`);
+      resolve(`File Writen.`);
     });
-});
+  });
+}
+
+readFilePro(`${__dirname}/dog.txt`)
+  .then((data) => {
+    console.log(`Breed: ${data}`);
+
+    return superagent.get(`https://dog.ceo/api/breed/${data}/images/random`);
+  })
+  .then((res) => {
+    console.log(res.body);
+
+    return writeFilePro(`dog-img.txt`, res.body.message);
+  })
+  .then(() => {
+    console.log(`Random Terrier Saved`);
+  })
+  .catch((err) => {
+    console.log(err.message);
+  });
