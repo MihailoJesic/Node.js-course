@@ -26,17 +26,15 @@ function writeFilePro(file, data) {
 readFilePro(`${__dirname}/dog.txt`)
   .then((data) => {
     console.log(`Breed: ${data}`);
-
     return superagent.get(`https://dog.ceo/api/breed/${data}/images/random`);
   })
   .then((res) => {
     console.log(res.body);
-
     return writeFilePro(`dog-img.txt`, res.body.message);
   })
   .then(() => {
     console.log(`Random Terrier Saved`);
   })
   .catch((err) => {
-    console.log(err.message);
+    console.log(`❌ ${err.message} ❌`);
   });
