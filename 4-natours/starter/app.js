@@ -44,9 +44,6 @@ app.get(`/api/v1/tours/:id`, (req, res) => {
     });
   }
 
-  //Put/Patch
-  //Here
-
   res.status(200).json({
     status: `success`,
     data: {
@@ -75,6 +72,8 @@ app.post(`/api/v1/tours`, (req, res) => {
     }
   );
 });
+
+app.put(`/api/v1/tours`, (req, res) => {});
 
 const port = 3000;
 app.listen(port, () => {
