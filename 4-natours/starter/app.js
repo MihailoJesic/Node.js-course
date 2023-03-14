@@ -44,8 +44,8 @@ app.get(`/api/v1/tours/:id`, (req, res) => {
     });
   }
 
-  console.log(id);
-  console.log(tour);
+  //Put/Patch
+  //Here
 
   res.status(200).json({
     status: `success`,
