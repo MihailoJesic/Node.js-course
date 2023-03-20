@@ -5,6 +5,11 @@ const app = express();
 
 app.use(express.json());
 
+app.use((req, res, next) => {
+  console.log(`Hello from middleware ⭕`);
+  next();
+});
+
 const tours = JSON.parse(
   fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`)
 );
