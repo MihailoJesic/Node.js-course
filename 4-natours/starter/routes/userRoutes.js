@@ -1,4 +1,9 @@
+const fs = require(`fs`);
 const express = require(`express`);
+
+const users = JSON.parse(
+  fs.readFileSync(`${__dirname}/../dev-data/data/users.json`)
+);
 
 function getAllUsers(req, res) {
   res.status(200).json({
@@ -17,7 +22,7 @@ function createUser(req, res) {
 
   users.push(newUser);
   fs.writeFile(
-    `${__dirname}/dev-data/data/users.json`,
+    `${__dirname}/../dev-data/data/users.json`,
     JSON.stringify(users),
     (err) => {
       res.status(201).json({

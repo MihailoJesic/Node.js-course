@@ -1,4 +1,9 @@
+const fs = require(`fs`);
 const express = require(`express`);
+
+const tours = JSON.parse(
+  fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`)
+);
 
 function getAllTours(req, res) {
   console.log(req.requestTime);
@@ -18,7 +23,7 @@ function createTour(req, res) {
 
   tours.push(newTour);
   fs.writeFile(
-    `${__dirname}/dev-data/data/tours-simple.json`,
+    `${__dirname}/../dev-data/data/tours-simple.json`,
     JSON.stringify(tours),
     (err) => {
       res.status(201).json({
