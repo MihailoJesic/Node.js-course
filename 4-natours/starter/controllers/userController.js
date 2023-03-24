@@ -17,7 +17,7 @@ exports.getAllUsers = function (req, res) {
 
 exports.createUser = function (req, res) {
   const newId = users[users.length - 1].id + 1;
-  const newUser = Object.assign({ id: newId }, req.body);
+  const newUser = Object.assign(newId, ...req.body);
 
   users.push(newUser);
   fs.writeFile(
@@ -37,9 +37,7 @@ exports.createUser = function (req, res) {
 exports.getUser = function (req, res) {
   const id = req.params.id * 1;
 
-  const user = users.find((el) => {
-    return el.id === id;
-  });
+  const user = users.find((el) => el.id === id);
 
   if (!user) {
     return res.status(404).json({
@@ -75,7 +73,7 @@ exports.updateUser = function (req, res) {
 
 exports.deleteUser = function (req, res) {
   const id = req.params.id * 1;
-  if (id > user.length) {
+  if (id > users.length) {
     return res.status(404).json({
       status: 'fail',
       message: 'invalid ID',

@@ -6,7 +6,6 @@ const tours = JSON.parse(
 
 exports.checkId = function (req, res, next, val) {
   console.log(`Tour id is ${val}`);
-  const id = req.params.id * 1;
   if (val > tours.length) {
     return res.status(404).json({
       status: 'fail',
@@ -39,7 +38,7 @@ exports.getAllTours = function (req, res) {
 
 exports.createTour = function (req, res) {
   const newId = tours[tours.length - 1].id + 1;
-  const newTour = Object.assign({ id: newId }, req.body);
+  const newTour = Object.assign(newId, ...req.body);
 
   tours.push(newTour);
   fs.writeFile(
@@ -59,9 +58,7 @@ exports.createTour = function (req, res) {
 exports.getTour = function (req, res) {
   const id = req.params.id * 1;
 
-  const tour = tours.find((el) => {
-    return el.id === id;
-  });
+  const tour = tours.find((el) => el.id === id);
 
   res.status(200).json({
     status: `success`,
@@ -72,8 +69,6 @@ exports.getTour = function (req, res) {
 };
 
 exports.updateTour = function (req, res) {
-  const id = req.params.id * 1;
-
   res.status(200).json({
     status: `success`,
     data: {
