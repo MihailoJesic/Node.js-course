@@ -67,6 +67,7 @@ tourSchema.virtual(`durationWeeks`).get(function () {
   return Math.round((this.duration * 10) / 7) / 10;
 });
 
+// Wont trigger on findById and update
 tourSchema.pre(`save`, function (next) {
   this.slug = slugify(this.name, { lower: true });
   next();
