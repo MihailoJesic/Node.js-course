@@ -87,8 +87,28 @@ tourSchema.pre(`save`, function (next) {
 //   next();
 // });
 
+// Querry middleware
+
 tourSchema.pre(/^find/, function (next) {
   this.find({ secretTour: { $ne: true } });
+  this.start = Date.now();
+  next();
+});
+
+tourSchema.post(/^find/, function (docs, next) {
+  console.log(`Querry took ${Date.cnow() - this.start}ms`);
+  console.log(docs);
+  next();
+});
+
+//Aggregation middleware
+tourSchema.pre(`aggregate`, function (next) {
+  this.pipeline().unsift({
+    $match: {
+      secretTour: { $ne: true },
+    },
+  });
+  // console.log(this.pipeline());
   next();
 });
 
