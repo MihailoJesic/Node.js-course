@@ -1,6 +1,6 @@
 const mongoose = require(`mongoose`);
 const slugify = require(`slugify`);
-const validator = require(`validator`);
+// const validator = require(`validator`);
 
 const tourSchema = new mongoose.Schema(
   {
@@ -113,7 +113,7 @@ tourSchema.pre(/^find/, function (next) {
 });
 
 tourSchema.post(/^find/, function (docs, next) {
-  console.log(`Querry took ${Date.cnow() - this.start}ms`);
+  console.log(`Querry took ${Date.now() - this.start}ms`);
   console.log(docs);
   next();
 });
