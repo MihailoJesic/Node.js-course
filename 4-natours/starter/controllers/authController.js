@@ -33,7 +33,7 @@ exports.login = catchAsync(async (req, res, next) => {
 
   // Check if email and password exist
   if (!email || !password) {
-    return next(new AppError(`Please provide email and passworld.`, 400));
+    return next(new AppError(`Please provide email and password.`, 400));
   }
   // Check if user and password are correct
   const user = await User.findOne({ email }).select(`+password`);
@@ -49,4 +49,30 @@ exports.login = catchAsync(async (req, res, next) => {
     status: `success`,
     token: token,
   });
+});
+
+exports.protect = catchAsync(async (req, res, next) => {
+  // Get token
+  let token;
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith(`Bearer `)
+  ) {
+    token = req.headers.authorization.split(` `)[1];
+  }
+
+  console.log(token);
+
+  if (!token) {
+    return next(
+      new AppError(`You are not logged in! Please log in to get access.`, 401)
+    );
+  }
+  // Token Verification
+
+  // Check if user exists
+
+  // Check if user changed password after token issuing
+
+  next();
 });
