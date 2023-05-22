@@ -101,3 +101,22 @@ exports.restrictTo =
     }
     next();
   };
+
+exports.forgotPassword = catchAsync(async (req, res, next) => {
+  // get user based on posted email
+  console.log(`body >> `, req.body);
+  console.log(req.body.email);
+  const user = await User.findOne({ email: req.body.email });
+  if (!user) {
+    return next(new AppError(`No user coresponding to that email`, 404));
+  }
+
+  // generate random token
+  const resetToken = user.createPasswordResetToken();
+  await user.save({ validateBeforeSave: false });
+
+  // send it to user email
+  console.log(resetToken);
+});
+
+exports.resetPassword = (req, res, next) => {};
